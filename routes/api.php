@@ -10,8 +10,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 
-Route::post('/login',[LoginController::class,'login']); 
-Route::post('/register',[LoginController::class,'register']); 
+Route::middleware('guest.api')->group(function () {
+    Route::post('/login',[LoginController::class,'login']); 
+    Route::post('/register',[LoginController::class,'register']); 
+});
 
 
 Route::middleware('auth:api')->group( function () {

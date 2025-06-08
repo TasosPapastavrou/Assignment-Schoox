@@ -19,7 +19,11 @@ Route::middleware('guest.api')->group(function () {
 Route::middleware('auth:api')->group( function () {
 
     Route::get('/logout',[LoginController::class,'logout']); 
-
-    // Route::get('/courses',[CoursesController::class,'getCourses']); 
-
+    Route::get('/courses',[CoursesController::class,'getCourses']); 
+    Route::get('/courses/{id}',[CoursesController::class,'getCourse']); 
+    Route::post('/courses', [CoursesController::class,'storeCourse']);
+    Route::delete('/courses/{id}', [CoursesController::class, 'courseDelete']);
+    Route::put('/courses/{id}', [CoursesController::class, 'courseUpdate']);       // full update
+    Route::patch('/courses/{id}', [CoursesController::class, 'coursePartialUpdate']); // partial update
+    // Route::get('/courses',[CoursesController::class,'getCourses'])->middleware('throttle:15,1')->name('get.courses');
 });

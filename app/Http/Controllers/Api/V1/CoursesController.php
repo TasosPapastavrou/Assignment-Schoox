@@ -16,32 +16,32 @@ class CoursesController extends Controller
     }
 
     public function getCourses(Request $request){
-        $response = $this->courseRepository->getAllCourses();
-        return $response;
+        $result = $this->courseRepository->getAllCourses();
+        return response()->json($result['response'], $result['http_status']);
     }
 
     public function getCourse(Request $request, $id){
-        $response = $this->courseRepository->getCourseById($id);
-        return $response;
+        $result = $this->courseRepository->getCourseById($id);
+        return response()->json($result['response'], $result['http_status']);
     }
 
     public function storeCourse(Request $request){
-        $response = $this->courseRepository->storeCourse($request);
-        return $response;
+        $result = $this->courseRepository->storeCourse($request);
+        return response()->json($result['response'], $result['http_status']);
     }
 
     public function courseDelete(Request $request, $id){
-        $response = $this->courseRepository->courseDelete($id);
-        return $response;
+        $result = $this->courseRepository->courseDelete($id);
+        return response()->json($result['response'], $result['http_status']);
     }
 
     public function courseUpdate(Request $request, $id){
-        $response = $this->courseRepository->courseUpdate($request,$id);
-        return $response;
+        $result = $this->courseRepository->courseUpdate($request,$id);
+        return response()->json($result['response'], $result['http_status']);
     }
 
     public function coursePartialUpdate(Request $request, $id){
-        $response = $this->courseRepository->coursePartialUpdate($request, $id);
-        return $response;
+        $result = $this->courseRepository->coursePartialUpdate($request, $id);
+        return response()->json($result['response'], $result['http_status']);
     }
 }

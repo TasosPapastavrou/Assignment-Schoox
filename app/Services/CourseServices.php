@@ -23,7 +23,7 @@ class CourseServices implements CourseRepositoryInterface
         $response = $this->statuses[1];
         $response["data"] = $courses;
 
-        return response()->json($response, 200); 
+        return ['response' => $response, "http_status" => 200];  
     }
 
     public function getCourseById(int $id){
@@ -37,12 +37,12 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[1];
             $response["data"] = $course;
         }else{
-            $httpReqStatus = 401; 
+            $httpReqStatus = 404; 
             $response = $this->statuses[0];
-            $response["message"] = "course with id: ".$id." not found";
+            $response["message"] = "We couldn't find a course with ID {$id}.";
         }
 
-        return response()->json($response, $httpReqStatus);    
+        return ['response' => $response, "http_status" => $httpReqStatus];   
     }
 
     public function storeCourse(Request $request){
@@ -65,7 +65,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[0];
             $httpReqStatus = 422;
             $response["message"] = $courceDataValidation->errors();
-            return response()->json($response, $httpReqStatus);
+            return ['response' => $response, "http_status" => $httpReqStatus];
         } 
 
         $dataOfCourse = $request->only('title', 'description','status', 'is_premium');
@@ -81,10 +81,12 @@ class CourseServices implements CourseRepositoryInterface
         if($tagsId)
             $course->tags()->attach($tagsId);
 
+        $course->load('tags');
         $response = $this->statuses[1];
-        $response["message"] = "course saved";
+        $response["data"] = $course;
+        $response["message"] = "Course created successfully.";
 
-        return response()->json($response, $httpReqStatus);
+        return ['response' => $response, "http_status" => $httpReqStatus];
         
     }
 
@@ -144,14 +146,15 @@ class CourseServices implements CourseRepositoryInterface
             $httpReqStatus = 200;
             $response = $this->statuses[1];
             $response["message"] = "Course deleted successfully";
+            $response["data"] = $course;
         }else{
 
             $response = $this->statuses[0];
-            $httpReqStatus = 422;
-            $response["message"] = "Error: course not found or already deleted";
+            $httpReqStatus = 404;
+            $response["message"] = "Course with ID ".$id." not found.";
         }
 
-        return response()->json($response, $httpReqStatus);
+        return ['response' => $response, "http_status" => $httpReqStatus];
     }
 
     public function courseUpdate(Request $request, int $id){
@@ -174,7 +177,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[0];
             $httpReqStatus = 422;
             $response["message"] = $courceDataValidation->errors();
-            return response()->json($response, $httpReqStatus);
+            return ['response' => $response, "http_status" => $httpReqStatus];
         } 
 
         $course = Course::find($id);
@@ -195,22 +198,20 @@ class CourseServices implements CourseRepositoryInterface
             if($tagsId)
                 $course->tags()->attach($tagsId);
 
-
+            $course->load('tags');
+            $response["data"] = $course;
             $response = $this->statuses[1];
-            $response["message"] = "course updates";
+            $response["message"] = "The course '{$course->title}' was updated successfully.";
 
         }else{
 
-
             $response = $this->statuses[0];
-            $httpReqStatus = 422;
-            $response["message"] = "Error: course not found";
-
-
+            $httpReqStatus = 404;
+            $response["message"] = "We couldn't find a course with ID {$id}.";
         }
 
 
-        return response()->json($response, $httpReqStatus);
+        return ['response' => $response, "http_status" => $httpReqStatus];
     }
 
 
@@ -235,7 +236,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[0];
             $httpReqStatus = 422;
             $response["message"] = $courceDataValidation->errors();
-            return response()->json($response, $httpReqStatus);
+            return ['response' => $response, "http_status" => $httpReqStatus];
         } 
 
         $course = Course::find($id);
@@ -257,22 +258,19 @@ class CourseServices implements CourseRepositoryInterface
                 $course->tags()->attach($tagsId);
 
 
+            $course->load('tags');
             $response = $this->statuses[1];
+            $response["data"] = $course;
             $response["message"] = "Course partially updated";
 
         }else{
 
-
             $response = $this->statuses[0];
-            $httpReqStatus = 422;
-            $response["message"] = "Error: course not found";
-
-
+            $httpReqStatus = 404;
+            $response["message"] = "We couldn't find a course with ID {$id}.";
         }
 
-
-        return response()->json($response, $httpReqStatus);
-
+        return ['response' => $response, "http_status" => $httpReqStatus];
     }
 
 

@@ -25,4 +25,5 @@ Route::middleware(['auth:api', 'throttle:course-actions'])->group( function () {
     Route::delete('/courses/{id}', [CoursesController::class, 'courseDelete']);
     Route::put('/courses/{id}', [CoursesController::class, 'courseUpdate']);        
     Route::patch('/courses/{id}', [CoursesController::class, 'coursePartialUpdate']);  
+    Route::get('/courses/filter/data',[CoursesController::class,'getFilterCourses']); 
 });

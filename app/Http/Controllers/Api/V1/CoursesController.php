@@ -44,4 +44,9 @@ class CoursesController extends Controller
         $result = $this->courseRepository->coursePartialUpdate($request, $id);
         return response()->json($result['response'], $result['http_status']);
     }
+
+    public function getFilterCourses(Request $request){
+        $result = $this->courseRepository->getFilterCourses($request);
+        return response()->json($result['response'], $result['http_status']);
+    }
 }

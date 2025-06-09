@@ -285,4 +285,13 @@ class CourseServices implements CourseRepositoryInterface
     }
 
 
+    public function getFilterCourses(Request $request){
+
+        $data = $request->input();
+        $response = $this->statuses[1];
+        $courses = Course::filterCourses($data)->with('tags')->get();
+        $response['data'] = $courses;
+        return ['response' => $response, "http_status" => 200];    
+    }
+
 }

@@ -13,4 +13,5 @@ interface CourseRepositoryInterface
     public function courseDelete(int $id);
     public function courseUpdate(Request $request, int $id);
     public function coursePartialUpdate(Request $request, int $id);
+    public function getFilterCourses(Request $request);
 }

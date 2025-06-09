@@ -16,12 +16,23 @@ class CourseServices implements CourseRepositoryInterface
             1 => ['status' => "success", "message"=> "", "data" => []],
     ];
 
-    public function getAllCourses()
+    public function getAllCourses(Request $request)
     {
-        $courses = Course::all();
-        
+
+        $perPage = $request->input('per_page', 10);
+        $courses = Course::with('tags')->paginate($perPage);
         $response = $this->statuses[1];
-        $response["data"] = $courses;
+
+        $response['data'] = [
+            'courses' => $courses->items(),
+            'pagination' => [
+                'total' => $courses->total(),
+                'count' => $courses->count(),
+                'per_page' => $courses->perPage(),
+                'current_page' => $courses->currentPage(),
+                'total_pages' => $courses->lastPage(),
+            ]
+        ];
 
         return ['response' => $response, "http_status" => 200];  
     }

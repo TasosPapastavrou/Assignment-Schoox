@@ -16,7 +16,7 @@ class CoursesController extends Controller
     }
 
     public function getCourses(Request $request){
-        $result = $this->courseRepository->getAllCourses();
+        $result = $this->courseRepository->getAllCourses($request);
         return response()->json($result['response'], $result['http_status']);
     }
 

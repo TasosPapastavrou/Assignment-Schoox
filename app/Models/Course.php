@@ -27,7 +27,7 @@ class Course extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeFilterCourses(Builder $query, $data)
+    public function scopeFilterCoursesOr(Builder $query, $data) // every record have one of them
     {
 
         $query->when($data['title'] ?? null, function ($query) use ($data) { 
@@ -50,6 +50,53 @@ class Course extends Model
                         $query->whereIn('name', $tags);
                     });
         });
+    }
+
+    public function scopeFilterCourses(Builder $query, array $filters): Builder
+    {
+        // Exact match for title
+        if (!empty($filters['title'])) {
+            $query->where('title', $filters['title']);
+        }
+
+        // Partial match for description
+        if (!empty($filters['description'])) {
+            $query->where('description', 'LIKE', '%' . $filters['description'] . '%');
+        }
+
+        // Exact match for status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Exact match for is_premium (ensure boolean logic)
+        if (isset($filters['is_premium'])) {
+            $query->where('is_premium', filter_var($filters['is_premium'], FILTER_VALIDATE_BOOLEAN));
+        }
+
+        // Filter by creation date range
+        if (!empty($filters['startDate'])) {
+            $startDate = Carbon::parse($filters['startDate'])->startOfDay();
+            $query->where('created_at', '>=', $startDate);
+        }
+
+        if (!empty($filters['endDate'])) {
+            $endDate = Carbon::parse($filters['endDate'])->endOfDay();
+            $query->where('created_at', '<=', $endDate);
+        }
+
+        // Ensure course has ALL specified tags (AND logic)
+        if (!empty($filters['tag'])) {
+            $tags = is_array($filters['tag']) ? $filters['tag'] : explode(',', $filters['tag']);
+
+            foreach ($tags as $tag) {
+                $query->whereHas('tags', function ($q) use ($tag) {
+                    $q->where('name', $tag);
+                });
+            }
+        }
+
+        return $query;
     }
 
 }

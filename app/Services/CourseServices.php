@@ -287,46 +287,46 @@ class CourseServices implements CourseRepositoryInterface
     }
 
 
-    // public function getFilterCourses(Request $request){
+    public function getFilterCourses(Request $request){
 
-    //     $data = $request->input();
-        // $response = $this->statuses[1];
-        // $courses = Course::filterCourses($data)->with('tags')->get();
-        // $response['data'] = $courses;
-        // return ['response' => $response, "http_status" => 200];    
-    // }
-
-
-    public function getFilterCourses(Request $request)
-    {
-        $query = Course::query()->with('tags');
-        $filterable = Schema::getColumnListing('courses');
-
-        foreach ($request->query() as $key => $value) {
-            if (in_array($key, $filterable)) {
-                // Convert 'true'/'false' string to actual boolean
-                if ($value === 'true' || $value === 'false') {
-                    $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-                }
-                $query->where($key, $value);
-            }
-        }
-
-        // Special case: filter by tag(s)
-        if ($request->has('tag')) {
-            $tags = is_array($request->tag) ? $request->tag : explode(',', $request->tag);
-            foreach ($tags as $tag) {
-                $query->whereHas('tags', function ($q) use ($tag) {
-                    $q->where('name', $tag);
-                });
-            }
-        }
- 
-        $courses = $query->get();
-        $response = $this->statuses[1]; 
+        $data = $request->input();
+        $response = $this->statuses[1];
+        $courses = Course::filterCourses($data)->with('tags')->get();
         $response['data'] = $courses;
-        return ['response' => $response, "http_status" => 200];  
- 
+        return ['response' => $response, "http_status" => 200];    
     }
+
+
+    // public function getFilterCourses(Request $request)
+    // {
+    //     $query = Course::query()->with('tags');
+    //     $filterable = Schema::getColumnListing('courses');
+
+    //     foreach ($request->query() as $key => $value) {
+    //         if (in_array($key, $filterable)) {
+    //             // Convert 'true'/'false' string to actual boolean
+    //             if ($value === 'true' || $value === 'false') {
+    //                 $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    //             }
+    //             $query->where($key, $value);
+    //         }
+    //     }
+
+    //     // Special case: filter by tag(s)
+    //     if ($request->has('tag')) {
+    //         $tags = is_array($request->tag) ? $request->tag : explode(',', $request->tag);
+    //         foreach ($tags as $tag) {
+    //             $query->whereHas('tags', function ($q) use ($tag) {
+    //                 $q->where('name', $tag);
+    //             });
+    //         }
+    //     }
+ 
+    //     $courses = $query->get();
+    //     $response = $this->statuses[1]; 
+    //     $response['data'] = $courses;
+    //     return ['response' => $response, "http_status" => 200];  
+ 
+    // }
 
 }

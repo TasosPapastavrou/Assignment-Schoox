@@ -199,8 +199,8 @@ class CourseServices implements CourseRepositoryInterface
                 $course->tags()->attach($tagsId);
 
             $course->load('tags');
-            $response["data"] = $course;
             $response = $this->statuses[1];
+            $response["data"] = $course;
             $response["message"] = "The course '{$course->title}' was updated successfully.";
 
         }else{

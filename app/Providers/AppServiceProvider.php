@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use App\Repositories\CourseRepositoryInterface;
 use App\Services\CourseServices;
+use App\Repositories\LoginRepositoryInterface;
+use App\Services\LoginServices;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreRoutes();
         $this->app->bind(CourseRepositoryInterface::class, CourseServices::class);
+        $this->app->bind(LoginRepositoryInterface::class, LoginServices::class);
     }
 
     /**

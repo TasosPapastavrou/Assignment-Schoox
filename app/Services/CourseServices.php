@@ -315,9 +315,11 @@ class CourseServices implements CourseRepositoryInterface
         // Special case: filter by tag(s)
         if ($request->has('tag')) {
             $tags = is_array($request->tag) ? $request->tag : explode(',', $request->tag);
-            $query->whereHas('tags', function ($q) use ($tags) {
-                $q->whereIn('name', $tags);
-            });
+            foreach ($tags as $tag) {
+                $query->whereHas('tags', function ($q) use ($tag) {
+                    $q->where('name', $tag);
+                });
+            }
         }
  
         $courses = $query->get();

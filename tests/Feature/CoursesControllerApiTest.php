@@ -27,23 +27,46 @@ class CoursesControllerApiTest extends TestCase
 
     public function test_user_can_get_all_courses()
     {
-        Course::factory()->count(3)->create(['user_id' => $this->user->id]);
-        $response = $this->getJson('/api/courses'); 
-
+        Course::factory()->count(12)->create(['user_id' => $this->user->id]); 
+        $response = $this->getJson('/api/courses?per_page=5&page=2'); 
+        
         $response->assertStatus(200)
-        ->assertJson([
-            'status' => 'success',
-            'message' => '',
-        ])
-        ->assertJsonStructure([
-            'status',
-            'message',
-            'data' => [
-                '*' => ['id', 'title', 'description', 'status', 'is_premium', 'user_id', 'created_at', 'updated_at']
-            ]
-        ]);
+            ->assertJson([
+                'status' => 'success',
+                'message' => '',
+            ])
+            ->assertJsonStructure([
+                'status',
+                'message',
+                'data' => [
+                    'courses' => [
+                        '*' => [
+                            'id',
+                            'title',
+                            'description',
+                            'status',
+                            'is_premium',
+                            'user_id',
+                            'created_at',
+                            'updated_at',
+                        ]
+                    ],
+                    'pagination' => [
+                        'total',
+                        'count',
+                        'per_page',
+                        'current_page',
+                        'total_pages',
+                    ]
+                ]
+            ])
+            ->assertJsonPath('data.pagination.current_page', 2)
+            ->assertJsonPath('data.pagination.per_page', 5)
+            ->assertJsonPath('data.pagination.total', 12)
+            ->assertJsonPath('data.pagination.total_pages', 3);
 
-        $this->assertCount(3, $response->json('data'));
+        
+        $this->assertCount(5, $response->json('data.courses'));
     }
 
 

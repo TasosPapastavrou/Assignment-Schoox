@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 interface CourseRepositoryInterface
 {
-    public function getAllCourses();
+    public function getAllCourses(Request $request);
     public function getCourseById(int $id);
     public function storeCourse(Request $request);
     public function courseDelete(int $id);

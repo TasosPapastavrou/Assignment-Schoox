@@ -121,11 +121,24 @@ docker-compose down
 docker-compose up -d
 ```
 
+## 🧵 Run Laravel Queues
+Since this application uses Redis queues, you must start the queue worker:
 
+```bash
+docker exec -it laravel-app php artisan queue:work
+```
 
+## ✅ Running Tests
 
+Run all tests:
+```bash
+docker exec -it laravel-app php artisan test
+```
 
-
+Run a specific test:
+```bash
+docker exec -it laravel-app php artisan test --filter={FunctionName}
+```
 
 
 

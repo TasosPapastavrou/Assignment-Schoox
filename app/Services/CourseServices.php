@@ -9,7 +9,8 @@ use App\Repositories\CourseRepositoryInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\Cache;
+use App\Events\CourseChange;
 
 class CourseServices implements CourseRepositoryInterface
 {
@@ -21,29 +22,52 @@ class CourseServices implements CourseRepositoryInterface
     public function getAllCourses(Request $request)
     {
 
+        $response = [];
+        $httpReqStatus = 200;
+
+        $paginateValidation = Validator::make($request->all(), [
+            'per_page' => 'required|numeric|gt:0',
+            'page' => 'required|numeric|gt:0'
+        ]);
+
+        if ($paginateValidation->fails()) {
+            $response = $this->statuses[0];
+            $httpReqStatus = 422;
+            $response["message"] = $paginateValidation->errors();
+            return ['response' => $response, "http_status" => $httpReqStatus];
+        }
+
         $perPage = $request->input('per_page', 10);
-        $courses = Course::with('tags')->paginate($perPage);
+        $page = $request->input('page');
         $response = $this->statuses[1];
 
-        $response['data'] = [
-            'courses' => $courses->items(),
-            'pagination' => [
-                'total' => $courses->total(),
-                'count' => $courses->count(),
-                'per_page' => $courses->perPage(),
-                'current_page' => $courses->currentPage(),
-                'total_pages' => $courses->lastPage(),
-            ]
-        ];
+        $response['data'] = Cache::remember("get_courses_per_page_{$perPage}_page_{$page}", now()->addMinutes(60), function () use ($request) {
 
-        return ['response' => $response, "http_status" => 200];  
+            $perPage = $request->input('per_page', 10) ?? '';
+            $courses = Course::with('tags')->paginate($perPage);
+
+            return [
+                'courses' => $courses->items(),
+                'pagination' => [
+                    'total' => $courses->total(),
+                    'count' => $courses->count(),
+                    'per_page' => $courses->perPage(),
+                    'current_page' => $courses->currentPage(),
+                    'total_pages' => $courses->lastPage(),
+                ]
+            ]; 
+        });
+
+        return ['response' => $response, "http_status" => $httpReqStatus];
     }
 
     public function getCourseById(int $id){
 
         $response = [];
         $httpReqStatus = '';
-        $course = Course::find($id);
+        $course = Cache::remember("get_course_{$id}", now()->addMinutes(60), function () use ($id) {
+                    return Course::find($id); 
+                  });
 
         if($course){
             $httpReqStatus = 200;
@@ -98,6 +122,7 @@ class CourseServices implements CourseRepositoryInterface
         $response = $this->statuses[1];
         $response["data"] = $course;
         $response["message"] = "Course created successfully.";
+        event(new CourseChange());
 
         return ['response' => $response, "http_status" => $httpReqStatus];
         
@@ -160,6 +185,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[1];
             $response["message"] = "Course deleted successfully";
             $response["data"] = $course;
+            event(new CourseChange());
         }else{
 
             $response = $this->statuses[0];
@@ -215,6 +241,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[1];
             $response["data"] = $course;
             $response["message"] = "The course '{$course->title}' was updated successfully.";
+            event(new CourseChange());
 
         }else{
 
@@ -275,6 +302,7 @@ class CourseServices implements CourseRepositoryInterface
             $response = $this->statuses[1];
             $response["data"] = $course;
             $response["message"] = "Course partially updated";
+            event(new CourseChange());
 
         }else{
 

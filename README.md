@@ -192,14 +192,14 @@ docker exec -it laravel-app php artisan {command}
 
 ### 🔐 Authentication
 
-#### POST `/register`
+#### POST `api/register`
 Create a new user account.
 
 **Body Parameters:**
 ```json
 {
   "name": "John Doe",
-  "email": "john@example.com",
+  "email": "john@gmail.com",
   "password": "password",
   "password_confirmation": "password"
 }

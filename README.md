@@ -140,7 +140,45 @@ Run a specific test:
 docker exec -it laravel-app php artisan test --filter={FunctionName}
 ```
 
+## 🔐 API Authentication
+This is a RESTful API secured using Laravel Passport. To authenticate:
+
+1. Register or log in via /api/register or /api/login.
+2. Copy the token from the response.
+3. Use the token as a Bearer Token in your Postman requests.
+
+```bash
+Authorization: Bearer {your_token_here}
+```
+
+🌐 API Base URL
+All API routes are prefixed with:
+
+```bash
+http://localhost:8080/api
+```
 
 
+
+## 📘 Sample Routes
+Example endpoint with parameters:
+```bash
+GET /api/courses/filter/data?tag=newtests&status=published
+```
+ 
+
+
+## 📋 Laravel Commands via Docker
+To run Laravel commands, use:
+
+```bash
+docker exec -it laravel-app bash
+```
+Or directly:
+```bash
+docker exec -it laravel-app php artisan {command}
+``` 
+
+ 
 
 

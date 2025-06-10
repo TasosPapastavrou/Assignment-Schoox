@@ -74,3 +74,30 @@ REDIS_HOST=redis
 REDIS_PORT=6379
 ```
 
+### 3. Build and Start Containers
+
+```bash
+docker-compose up -d --build
+```
+
+### 4. Enter Laravel Container
+
+```bash
+docker exec -it laravel-app bash
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

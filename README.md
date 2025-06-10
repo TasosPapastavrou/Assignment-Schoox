@@ -23,7 +23,7 @@
 
 # 📚 Assignment Schoox API
 
-A RESTful API built with **Laravel 12**, running in **Docker** with **MySQL**, **Redis**, and **Laravel Passport** for secure user authentication. This application includes user management, queues, filtering endpoints, and more.
+A RESTful API built with **Laravel 12**, running in **Docker** with **MySQL**, **Redis**, and **Laravel Passport** for secure user authentication. This application includes user and course management, queues, filtering, and more.
 
 ---
 

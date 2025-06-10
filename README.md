@@ -95,7 +95,7 @@ composer install
 php artisan key:generate
 php artisan migrate
 php artisan passport:keys
-php artisan passport:client --personal
+php artisan passport:client --personal (after command type in: (1) Laravel, (2) users)
 ```
 
 ## File Permissions

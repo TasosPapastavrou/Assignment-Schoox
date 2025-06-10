@@ -215,14 +215,14 @@ docker exec -it laravel-app php artisan {command}
 
 | Method | Endpoint                     | Description                      | Request Body            |
 |--------|------------------------------|---------------------------------|------------------------|
-| POST   | `/api/logout`                | User logout                     | (Empty or set yourself) |
-| GET    | `/api/courses`               | Get all courses                 | N/A                    |
-| GET    | `/api/courses/{id}`          | Get course by ID                | N/A                    |
-| POST   | `/api/courses`               | Create a new course             | (Set yourself)          |
-| DELETE | `/api/courses/{id}`          | Delete a course by ID           | N/A                    |
-| PUT    | `/api/courses/{id}`          | Update a course completely     | (Set yourself)          |
-| PATCH  | `/api/courses/{id}`          | Partially update a course       | (Set yourself)          |
-| GET    | `/api/courses/filter/data`   | Filter courses by parameters    | N/A                    |
+| POST   | `/api/logout`                | User logout                     | (Empty) |
+| GET    | `/api/courses`               | Get all courses                 | `/api/courses?per_page=50&page=5`                    |
+| GET    | `/api/courses/{id}`          | Get course by ID                | (Empty)                    |
+| POST   | `/api/courses`               | Create a new course             | `{ "title": "Course Title", "description": "Course description", "status": "published", "is_premium": false, "tags": ["tag1", "tag2"] }`          |
+| DELETE | `/api/courses/{id}`          | Delete a course by ID           | (Empty)                    |
+| PUT    | `/api/courses/{id}`          | Update a course completely     | `{ "title": "Course Title", "description": "Course description", "status": "published", "is_premium": false, "tags": ["tag1", "tag2"] }`          |
+| PATCH  | `/api/courses/{id}`          | Partially update a course       | `{ "title": "Course Title", "description": "Course description", "status": "published", "is_premium": false, "tags": ["tag1", "tag2"] }`          |
+| GET    | `/api/courses/filter/data`   | Filter courses by parameters    | You can filter courses by any column from the courses table as well as by tags. Additionally, you can retrieve courses within a specific date range.                    |
 
 ---
 

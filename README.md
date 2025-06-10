@@ -179,6 +179,8 @@ Or directly:
 docker exec -it laravel-app php artisan {command}
 ``` 
 
- 
+## Assessment Bonus Done 
+- Advanced Filtering: Complex queries with multiple criteria (e.g., `GET/courses?status=published&premium=true&tag=programming`).
+- Caching: Use caching to improve response times.
 
 

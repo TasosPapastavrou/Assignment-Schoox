@@ -186,20 +186,47 @@ docker exec -it laravel-app php artisan {command}
 
 
 
-> ⚠️ All routes require a **Bearer token** (Laravel Passport) in the `Authorization` header.
+> ⚠️ All routes **require a Bearer token** (Laravel Passport) in the `Authorization` header  
+> **except** the `api/register` and `api/login` routes, which are publicly accessible.
+
 
 ---
 
-### 🔐 Authentication
 
-#### POST `api/register`
-Create a new user account.
+> ⚠️ All routes **require a Bearer token** in the `Authorization` header except `/login` and `/register`.
 
-**Body Parameters:**
-```json
-{
-  "name": "John Doe",
-  "email": "john@gmail.com",
-  "password": "password",
-  "password_confirmation": "password"
-}
+---
+
+### 🔓 Public (No Auth Required)
+
+| Method | Endpoint     | Description           | Request Body                 |
+|--------|--------------|-----------------------|-----------------------------|
+| POST   | `/login`     | User login            | (Set yourself)              |
+| POST   | `/register`  | User registration     | (Set yourself)              |
+
+---
+
+### 🔐 Authenticated Routes (Require Bearer Token)
+
+| Method | Endpoint                 | Description                      | Request Body            |
+|--------|--------------------------|---------------------------------|------------------------|
+| POST   | `/logout`                | User logout                     | (Empty or set yourself) |
+| GET    | `/courses`               | Get all courses                 | N/A                    |
+| GET    | `/courses/{id}`          | Get course by ID                | N/A                    |
+| POST   | `/courses`               | Create a new course             | (Set yourself)          |
+| DELETE | `/courses/{id}`          | Delete a course by ID           | N/A                    |
+| PUT    | `/courses/{id}`          | Update a course completely     | (Set yourself)          |
+| PATCH  | `/courses/{id}`          | Partially update a course       | (Set yourself)          |
+| GET    | `/courses/filter/data`   | Filter courses by parameters    | N/A                    |
+
+---
+
+### 🔧 Notes on Usage
+
+- For POST, PUT, and PATCH routes, fill in the request body according to your app’s needs.
+- Use the Bearer token from `/login` or `/register` responses in your requests:
+  
+
+
+
+

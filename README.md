@@ -56,3 +56,21 @@ git clone https://github.com/TasosPapastavrou/Assignment-Schoox.git
 cd Assignment-Schoox
 cp .env.example .env
 
+
+### 2. Configure Environment
+Update the #.env file with:
+```bash
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=Schoox
+DB_USERNAME=Schoox
+DB_PASSWORD=Schoox
+
+CACHE_DRIVER=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+

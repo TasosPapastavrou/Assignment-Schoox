@@ -192,16 +192,6 @@ docker exec -it laravel-app php artisan {command}
 
 ---
 
-
-> ⚠️ All routes **require a Bearer token** in the `Authorization` header except `/login` and `/register`.
-
----
-
-
-> ⚠️ All routes **require a Bearer token** in the `Authorization` header except `/api/login` and `/api/register`.
-
----
-
 ### 🔓 Public (No Auth Required)
 
 | Method | Endpoint         | Description           | Request Body                 |

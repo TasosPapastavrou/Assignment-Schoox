@@ -58,7 +58,7 @@ cp .env.example .env
 ```
 
 ### 2. Configure Environment
-Update the #.env file with:
+Update the **.env** file with:
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=db

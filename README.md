@@ -206,8 +206,8 @@ docker exec -it laravel-app php artisan {command}
 
 | Method | Endpoint         | Description           | Request Body                 |
 |--------|------------------|-----------------------|-----------------------------|
-| POST   | `/api/login`     | User login            | (Set yourself)              |
-| POST   | `/api/register`  | User registration     | (Set yourself)              |
+| POST   | `/api/login`     | User login            | `{ "email": "john@example.com", "password": "password" }`              |
+| POST   | `/api/register`  | User registration     | `{ "name": "John Doe", "email": "john@example.com", "password": "password", "password_confirmation": "password" }`              |
 
 ---
 

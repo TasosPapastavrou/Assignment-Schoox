@@ -55,7 +55,7 @@ Ensure the following are installed:
 git clone https://github.com/TasosPapastavrou/Assignment-Schoox.git
 cd Assignment-Schoox
 cp .env.example .env
-
+---
 
 ### 2. Configure Environment
 Update the #.env file with:
@@ -72,5 +72,5 @@ QUEUE_CONNECTION=redis
 SESSION_DRIVER=redis
 REDIS_HOST=redis
 REDIS_PORT=6379
-
+---
 

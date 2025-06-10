@@ -184,3 +184,22 @@ docker exec -it laravel-app php artisan {command}
 - Caching: Use caching to improve response times.
 
 
+
+
+> ⚠️ All routes require a **Bearer token** (Laravel Passport) in the `Authorization` header.
+
+---
+
+### 🔐 Authentication
+
+#### POST `/register`
+Create a new user account.
+
+**Body Parameters:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}

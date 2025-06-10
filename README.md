@@ -87,9 +87,39 @@ docker exec -it laravel-app bash
 ```
 
 
+## ⚙️ Laravel Setup
+Inside the container, run the following commands:
 
+```bash
+composer install
+php artisan key:generate
+php artisan migrate
+php artisan passport:keys
+php artisan passport:client --personal
+```
 
+## File Permissions
 
+```bash
+chmod -R 775 storage
+chown -R www-data:www-data storage
+
+chmod 600 storage/oauth-public.key storage/oauth-private.key
+chmod 600 /var/www/html/storage/oauth-public.key /var/www/html/storage/oauth-private.key
+```
+
+## Exit the container:
+
+```bash
+exit
+```
+
+## 🔄 Restart Docker Services
+
+```bash
+docker-compose down
+docker-compose up -d
+```
 
 
 
